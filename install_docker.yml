@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Détecter la distribution
+      command: cat /etc/os-release
+      register: os_release
+
+    - name: Afficher les informations de la distribution
+      debug:
+        msg: "{{ os_release.stdout }}"
+
+    - name: Installer Docker sur Debian/Ubuntu
+      when: "'ID=ubuntu' in os_release.stdout or 'ID=debian' in os_release.stdout"
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Installer Docker sur Amazon Linux
+      when: "'ID=\"amzn\"' in os_release.stdout"
+      shell: amazon-linux-extras install docker -y
+
+    - name: Installer les dépendances Docker sur CentOS/RHEL
+      when: "'ID=centos' in os_release.stdout or 'ID=rhel' in os_release.stdout"
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
+
+    - name: Ajouter le dépôt Docker sur CentOS/RHEL
+      when: "'ID=centos' in os_release.stdout or 'ID=rhel' in os_release.stdout"
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Installer Docker sur CentOS/RHEL
+      when: "'ID=centos' in os_release.stdout or 'ID=rhel' in os_release.stdout"
+      yum:
+        name: docker-ce
+        state: present
+
+    - name: Assurer que Docker est démarré et activé au démarrage
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Ajouter l'utilisateur mon_user au groupe docker
+      user:
+        name: mon_user
+        groups: docker
+        append: yes

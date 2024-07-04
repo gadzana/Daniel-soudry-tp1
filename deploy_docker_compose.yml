@@ -1,0 +1,42 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Installer Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    - name: Créer le répertoire de l'application
+      file:
+        path: /home/mon_user/nginx-app
+        state: directory
+        owner: mon_user
+        group: mon_user
+
+    - name: Copier le Dockerfile
+      copy:
+        src: ./Dockerfile
+        dest: /home/mon_user/nginx-app/Dockerfile
+        owner: mon_user
+        group: mon_user
+
+    - name: Copier le fichier index.html
+      copy:
+        src: ./index.html
+        dest: /home/mon_user/nginx-app/index.html
+        owner: mon_user
+        group: mon_user
+
+    - name: Copier le fichier docker-compose.yml
+      copy:
+        src: ./docker-compose.yml
+        dest: /home/mon_user/nginx-app/docker-compose.yml
+        owner: mon_user
+        group: mon_user
+
+    - name: Construire et démarrer les services avec Docker Compose
+      command: /usr/local/bin/docker-compose up -d
+      args:
+        chdir: /home/mon_user/nginx-app

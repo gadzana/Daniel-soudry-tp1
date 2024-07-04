@@ -1,0 +1,44 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Assurer que Docker est démarré et activé au démarrage
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Créer le répertoire de l'application
+      file:
+        path: /home/mon_user/nginx-app
+        state: directory
+        owner: mon_user
+        group: mon_user
+
+    - name: Copier le Dockerfile
+      copy:
+        src: ./Dockerfile
+        dest: /home/mon_user/nginx-app/Dockerfile
+        owner: mon_user
+        group: mon_user
+
+    - name: Copier le fichier index.html
+      copy:
+        src: ./index.html
+        dest: /home/mon_user/nginx-app/index.html
+        owner: mon_user
+        group: mon_user
+
+    - name: Construire l'image Docker
+      command: docker build -t nginx-example /home/mon_user/nginx-app
+      args:
+        chdir: /home/mon_user/nginx-app
+
+    - name: Télécharger et exécuter le conteneur Nginx
+      command: docker run --name nginx-example -d -p 80:80 nginx-example
+
+    - name: Ajouter l'utilisateur mon_user au groupe docker
+      user:
+        name: mon_user
+        groups: docker
+        append: yes
