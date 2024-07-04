@@ -19,8 +19,11 @@
         update_cache: yes
 
     - name: Installer Docker sur Amazon Linux
-      when: "'ID=\"amzn\"' in os_release.stdout"
-      shell: amazon-linux-extras install docker -y
+      when: "'ID=amzn' in os_release.stdout"
+      dnf:
+        name: docker
+        state: present
+
 
     - name: Installer les dépendances Docker sur CentOS/RHEL
       when: "'ID=centos' in os_release.stdout or 'ID=rhel' in os_release.stdout"

@@ -1,7 +1,6 @@
 ---
 - hosts: all
   become: yes
-
   tasks:
     - name: Détecter la distribution
       command: cat /etc/os-release
@@ -12,34 +11,16 @@
         msg: "{{ os_release.stdout }}"
 
     - name: Créer l'utilisateur mon_user sur Debian/Ubuntu
+      command: useradd -m -s /bin/bash mon_user
       when: "'ID=ubuntu' in os_release.stdout or 'ID=debian' in os_release.stdout"
-      user:
-        name: mon_user
-        state: present
-        create_home: yes
-        shell: /bin/bash
-        password: "" # Remplacez par votre mot de passe chiffré
 
     - name: Créer l'utilisateur mon_user sur Amazon Linux
+      command: useradd -m -s /bin/bash mon_user
       when: "'ID=\"amzn\"' in os_release.stdout"
-      user:
-        name: mon_user
-        state: present
-        create_home: yes
-        shell: /bin/bash
-        password: "" # Remplacez par votre mot de passe chiffré
 
     - name: Créer l'utilisateur mon_user sur CentOS/RHEL
+      command: useradd -m -s /bin/bash mon_user
       when: "'ID=centos' in os_release.stdout or 'ID=rhel' in os_release.stdout"
-      user:
-        name: mon_user
-        state: present
-        create_home: yes
-        shell: /bin/bash
-        password: "GadZanaMotDePasse"
 
-    - name: Ajouter l'utilisateur serveurweb au groupe docker
-      user:
-        name: serveurweb
-        groups: docker
-        append: yes
+    - name: Ajouter l'utilisateur mon_user au groupe docker
+      command: usermod -aG docker mon_user
