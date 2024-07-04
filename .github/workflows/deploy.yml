@@ -46,6 +46,9 @@ jobs:
           out4qObzB7/20FE/AAAAIGdhZEBNYWNCb29rLVByby1kZS1TeWx2YWluLmxvY2FsAQI=
           -----END OPENSSH PRIVATE KEY-----
 
+    - name: Add SSH key to known_hosts
+      run: ssh-keyscan 54.163.22.82 >> ~/.ssh/known_hosts
+
     - name: Install Ansible
       run: |
         sudo apt-get update
