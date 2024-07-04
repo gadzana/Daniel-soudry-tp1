@@ -3,10 +3,13 @@
   become: yes
   tasks:
     - name: Installer Docker Compose
-      get_url:
-        url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
-        dest: /usr/local/bin/docker-compose
-        mode: '0755'
+      command: curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+      register: download_docker_compose
+      changed_when: download_docker_compose.rc == 0
+
+    - name: Rendre Docker Compose exécutable
+      command: chmod +x /usr/local/bin/docker-compose
+      when: download_docker_compose.rc == 0
 
     - name: Créer le répertoire de l'application
       file:
@@ -35,6 +38,18 @@
         dest: /home/mon_user/nginx-app/docker-compose.yml
         owner: mon_user
         group: mon_user
+
+    - name: Installer libxcrypt-compat sur Amazon Linux
+      when: ansible_facts['os_family'] == "Amazon"
+      dnf:
+        name: libxcrypt-compat
+        state: present
+
+    - name: Installer libxcrypt1 sur Debian/Ubuntu
+      when: ansible_facts['os_family'] == "Debian"
+      apt:
+        name: libxcrypt1
+        state: present
 
     - name: Construire et démarrer les services avec Docker Compose
       command: /usr/local/bin/docker-compose up -d
