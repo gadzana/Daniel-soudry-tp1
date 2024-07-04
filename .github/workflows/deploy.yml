@@ -63,3 +63,4 @@ jobs:
       run: |
         ansible-playbook -i inventory -u ec2-user --private-key=./rsakey --become deploy_docker.yml
       if: github.ref == 'refs/heads/main'
+ 
