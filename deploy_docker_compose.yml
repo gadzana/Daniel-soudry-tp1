@@ -43,7 +43,7 @@
       when: ansible_facts['os_family'] == "Amazon"
       dnf:
         name: libxcrypt-compat
-        state: present
+        state: present 
 
     - name: Installer libxcrypt1 sur Debian/Ubuntu
       when: ansible_facts['os_family'] == "Debian"
