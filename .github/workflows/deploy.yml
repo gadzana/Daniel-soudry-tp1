@@ -1,42 +1,46 @@
-name: Deploy
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - dev
-  pull_request:
-    branches:
-      - main
+      - main  # Déclencher le workflow sur les commits poussés vers la branche "main"
+      - dev   # Déclencher le workflow sur les commits poussés vers la branche "dev"
 
 jobs:
-  deploy_dev:
+  deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Run Ansible Playbook for Dev
-        run: |
-          ansible-playbook -i inventory -u ec2-user --private-key=./rsakey --become deploy_docker_compose.yml
+    - name: Install Ansible
+      run: sudo apt-get update && sudo apt-get install -y ansible
 
-  deploy_prod:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          apt-transport-https \
+          ca-certificates \
+          curl \
+          gnupg-agent \
+          software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository \
+          "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+          $(lsb_release -cs) \
+          stable"
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Run Ansible Playbook for Prod
-        run: |
-          ansible-playbook -i inventory -u ec2-user --private-key=./rsakey --become deploy_docker_compose.yml
+    - name: Run Ansible Playbook
+      run: |
+        ansible-playbook -i inventory deploy.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: "false"
