@@ -47,7 +47,9 @@ jobs:
           -----END OPENSSH PRIVATE KEY-----
 
     - name: Add SSH key to known_hosts
-      run: ssh-keyscan 54.163.22.82 >> ~/.ssh/known_hosts
+      run: |
+        echo "54.163.22.82 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmzdlHAYNTYAAAABB8uT8H2Wumc3bSjCa7NkU+IrrdIv33SKO4vyAB0gjGhGhPs1TFIOTvzN6ve8VY5jQb6JKvZCluey78FVGf2Xmk=" >> ~/.ssh/known_hosts
+        echo "54.163.22.82 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIbzdtGB5dX+eajUF4ER6/t5eHQQAaVRZtOLIJ4" >> ~/.ssh/known_hosts
 
     - name: Install Ansible
       run: |
@@ -63,4 +65,3 @@ jobs:
       run: |
         ansible-playbook -i inventory -u ec2-user --private-key=./rsakey --become deploy_docker.yml
       if: github.ref == 'refs/heads/main'
- 
