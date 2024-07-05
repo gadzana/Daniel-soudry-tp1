@@ -58,10 +58,10 @@ jobs:
 
     - name: Run Ansible Playbook (Docker Compose)
       run: |
-        ansible-playbook -i inventory -u ec2-user --private-key=./rsakey --become deploy_docker_compose.yml
+        ansible-playbook -i inventory -u mon_user --private-key=./rsakey --become deploy_docker_compose.yml
       if: github.ref == 'refs/heads/dev'
 
     - name: Run Ansible Playbook (Docker)
       run: |
-        ansible-playbook -i inventory -u ec2-user --private-key=./rsakey --become deploy_docker.yml
+        ansible-playbook -i inventory -u mon_user --private-key=./rsakey --become deploy_docker.yml
       if: github.ref == 'refs/heads/main'
