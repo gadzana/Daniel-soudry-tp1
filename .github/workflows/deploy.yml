@@ -17,7 +17,34 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-private-key: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
+          NhAAAAAwEAAQAAAQEA033VnREv0m+deHOvIDVE57vaGVYoiGADW/IhGYJNK83LSIFqwCiH
+          NKiQZ+J6FkKx3aSuzskGf4jck5ue+f+hWmEUwDG6IDsKZ9MCHipfdu6EHyvFbF4xs4fR+K
+          zLxaq5Eqfjyt39WAK9uuKGImN1pJ5CaEaGjHB5JKboKYCazBZnQl3S5kKUi+j2I0Ok7EPz
+          5m5l8yWKBTaf65LSntSY1LWVniSrtFFWgHJPzyW0rQWHO8JcuXCf+sdKDJDrThbblCkKaQ
+          SP8tpwH/MIeLP4Q2NXcaeixUkJr5lLrhaasuMsCFH9BBH6cwk+aYsnKK6B3kTZSubG/i6L
+          E+iewhOfXQAAA9i7pqlKu6apSgAAAAdzc2gtcnNhAAABAQDTfdWdES/Sb514c68gNUTnu9
+          oZViiIYANb8iEZgk0rzctIgWrAKIc0qJBn4noWQrHdpK7OyQZ/iNyTm575/6FaYRTAMbog
+          Owpn0wIeKl927oQfK8VsXjGzh9H4rMvFqrkSp+PK3f1YAr264oYiY3WknkJoRoaMcHkkpu
+          gpgJrMFmdCXdLmQpSL6PYjQ6TsQ/PmbmXzJYoFNp/rktKe1JjUtZWeJKu0UVaAck/PJbSt
+          BYc7wly5cJ/6x0oMkOtOFtuUKQppBI/y2nAf8wh4s/hDY1dxp6LFSQmvmUuuFpqy4ywIUf
+          0EEfpzCT5piycoroHeRNlK5sb+LosT6J7CE59dAAAAAwEAAQAAAQBR4Uz7o3TNVzMzOC6c
+          HKORyFPXLVlB+1IxnducwarZA7LpXlmTDd3S0FQgNDmqNqYgNqsLGh8u7zDe4Qg6p/KzSB
+          S9mEMESXds3O/b9/G/3PZADzU/EHTTmgj76wJ1g/RlOaTinPGByoXkPeFKnREl67OwJWXg
+          J4dvXkNSFh1YV7uqMv+tAdS7DJAFNviynpj9PUDsSUgiXc9Oep11LiWYGuSF7mzdf2eAKi
+          w00fwh9UqjDX6H9fYpn0nRBLfRrqaOY7botT0mMKSRudPbXeV4fAvisgsR6rHykm73sFn/
+          gpxDS/E46+7azOZOciBDfIptZTxek+H7ihDDqfogVWZNAAAAgQC5kh5gkrcU70R8jQdcbv
+          83/BlS+APVRPT6ghh8u5u8Q3pkG2dlV8q8jcFAxNF575nnnuxnD4ASaUHJf0ShtuMtZunI
+          lEEcezeT71LWjULo4bn1x8hD4sQGKZpeIUdjOnjiyXQzr727v1djtW85aOA77xokOfASfj
+          hoAbryCLBZgAAAAIEA9kUZY+8tbzbfhqZE6tpJBwNKZW+cA/NHu6q87kUBDkimw1gq3Xdz
+          qySLsTLW/cqOUMTuLpCWecu0QLwUG1tGnYpWC2/VbneUPx1r8DjE8I7A4UoJIAfYEisOVj
+          GipccLaTdtVgx/G7EozdNqIHQiOoW9KWidt/4HtiF57fm6zGMAAACBANvY+ARhR3mHrETI
+          JDXIAuZkLB9U6WZP3OUy4fCAK5gf/qwBepwanpmi2nAWj0HWWqIlQ6cl2cEhysVt7FfHZ2
+          FPjL1yuGY/O99SZFSksImfsZoi6w/U3H3dylXjxqSe38350vXMJadowkqYm02ohfarzUGb
+          out4qObzB7/20FE/AAAAIGdhZEBNYWNCb29rLVByby1kZS1TeWx2YWluLmxvY2FsAQI=
+          -----END OPENSSH PRIVATE KEY-----
 
     - name: Add SSH key to known_hosts
       run: |
