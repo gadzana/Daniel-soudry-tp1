@@ -48,10 +48,8 @@ jobs:
 
     - name: Add SSH key to known_hosts
       run: |
-        mkdir -p ~/.ssh
-        echo "54.163.22.82 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvP1B2h...zaB1cgbNkUfA2s5Xk0w==" >> ~/.ssh/known_hosts
-        echo "54.163.22.82 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmzdlHAYNTYAAAABB8uT8H2Wumc3bSjCa7NkU+IrrdIv33SKO4vyAB0gjGhGhPs1TFIOTvzN6ve8VY5jQb6JKvZCluey78FVGf2Xmk=" >> ~/.ssh/known_hosts
         echo "54.163.22.82 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILub0vsZtGBSdhdOC/eajUF4ER6/t5eHQQAaVRZt0LIJ4" >> ~/.ssh/known_hosts
+        echo "54.163.22.82 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmzdlHAYNTYAAAABB8uT8H2Wumc3bSjCa7NkU+IrrdIv33SKO4vyAB0gjGhGhPs1TFIOTvzN6ve8VY5jQb6JKvZCluey78FVGf2Xmk=" >> ~/.ssh/known_hosts
 
     - name: Install Ansible
       run: |
